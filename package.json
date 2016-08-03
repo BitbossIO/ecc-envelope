@@ -1,0 +1,33 @@
+{
+  "name": "ecc-envelope",
+  "version": "1.0.0",
+  "description": "A protocol for encrypting and signing messages using Elliptical curve cryptography (ECC)",
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "mocha",
+    "prepublish": "coffee -o lib -c src/*.coffee"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BitbossIO/ecc-envelope.git"
+  },
+  "keywords": [
+    "ecc"
+  ],
+  "author": "joshr@bitboss.io",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/BitbossIO/ecc-envelope/issues"
+  },
+  "homepage": "https://github.com/BitbossIO/ecc-envelope#readme",
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "chai-as-promised": "^5.3.0",
+    "coffee-script": "^1.10.0",
+    "mocha": "^3.0.0"
+  },
+  "dependencies": {
+    "ecc-tools": "^1.0.1",
+    "protobufjs": "^5.0.1"
+  }
+}
