@@ -6,7 +6,7 @@ chai.use chaiAsPromised
 
 expect = chai.expect
 
-Envelope = require '../src/envelope'
+Envelope = require '../src/index'
 et = require 'ecc-tools'
 
 describe 'Envelope', ->
@@ -34,11 +34,10 @@ describe 'Envelope', ->
           expect(result).to.eventually.be.true
 
       describe 'decode:', ->
-        before (done) ->
+        before ->
           @envelope = Envelope(send: {hello: 'world'}, from: @alicePrivateKey, to: @bobPublicKey)
           @envelope.encode().then (message) =>
             @message = message
-            done()
 
         it 'should create an envelope', ->
           envelope = Envelope(decode: @message)
