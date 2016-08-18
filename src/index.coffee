@@ -103,7 +103,8 @@ class Envelope
 
   open: (key) ->
     @seal().then (e) =>
-      @verify().then =>
+      @verify().then (valid) =>
+        return false unless valid
         if @_algorithm == 'plaintext'
           ciphertext = e._cipher.ciphertext.toBuffer?() ? e._cipher.ciphertext
           @_decryptor = promise.resolve(JSON.parse(ciphertext))
@@ -111,8 +112,8 @@ class Envelope
           @_decryptor = et.decrypt(e._cipher, key, e._algorithm)
 
         @_decryptor.then (plaintext) =>
-          to: e._to.public
-          from: e._from.public
+          to: e._to.public.toBuffer?() ? e._to.public
+          from: e._from.public.toBuffer?() ? e._from.public
           data: plaintext
 
   encode: (encoding) ->
