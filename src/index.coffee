@@ -112,8 +112,8 @@ class Envelope
           @_decryptor = et.decrypt(e._cipher, key, e._algorithm)
 
         @_decryptor.then (plaintext) =>
-          to: e._to.public.toBuffer?() ? e._to.public
-          from: e._from.public.toBuffer?() ? e._from.public
+          to: e._to.public?.toBuffer?() ? e._to.public
+          from: e._from.public?.toBuffer?() ? e._from.public
           data: plaintext
 
   encode: (encoding) ->

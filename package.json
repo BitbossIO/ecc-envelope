@@ -1,6 +1,6 @@
 {
   "name": "ecc-envelope",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A protocol for encrypting and signing messages using Elliptical curve cryptography (ECC)",
   "main": "lib/index.js",
   "scripts": {
