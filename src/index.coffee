@@ -56,7 +56,7 @@ class Envelope
       switch args.as
         when 'hex' then @_buffer = Protocol.Envelope.decodeHex(@_decode)
         when 'json' then @_buffer = Protocol.Envelope.decodeJSON(@_decode)
-        else @_buffer = Protocol.Envelope.decode(@_decode.toBuffer?() ? @_decode)
+        else @_buffer = Protocol.Envelope.decode((@_decode.toBuffer?() ? @_decode))
       @_checksum = @_buffer.checksum
       @_signature = @_buffer.signature
       @_cipher = @_buffer.cipher
@@ -98,21 +98,27 @@ class Envelope
 
   verify: ->
     @seal().then (e) =>
-      et.verify(e._checksum, e._from.public, e._signature) &&
-      (e._checksum.toBuffer?() ? e._checksum).equals(et.checksum(e._cipher.encodeJSON()))
+      checksum = Buffer.from(e._checksum.toBuffer?() ? e._checksum)
+      et.verify(checksum, e._from.public, e._signature) &&
+      checksum.equals(et.checksum(e._cipher.encodeJSON()))
 
   open: (key) ->
     @seal().then (e) =>
       @verify().then =>
         if @_algorithm == 'plaintext'
-          ciphertext = e._cipher.ciphertext.toBuffer?() ? e._cipher.ciphertext
+          ciphertext = Buffer.from(e._cipher.ciphertext.toBuffer?() ? e._cipher.ciphertext)
           @_decryptor = promise.resolve(JSON.parse(ciphertext))
         else
           @_decryptor = et.decrypt(e._cipher, key, e._algorithm)
 
+
         @_decryptor.then (plaintext) =>
-          to: e._to.public
-          from: e._from.public
+          to = e._to.public?.toBuffer?() ? e._to.public
+          to = Buffer.from(to) if to?
+          from = e._from.public?.toBuffer?() ? e._from.public
+          from = Buffer.from(from) if from?
+          to: to
+          from: from
           data: plaintext
 
   encode: (encoding) ->
@@ -121,7 +127,9 @@ class Envelope
         when 'hex' then e._buffer.encodeHex()
         when 'json' then e._buffer.encodeJSON()
         when 'base64' then e._buffer.encode64()
-        else e._buffer.encode()
+        else
+          buffer = e._buffer.encode()
+          Buffer.from(buffer.toBuffer() ? buffer)
 
 Envelope.et = et
 Envelope.Protocol = Protocol
