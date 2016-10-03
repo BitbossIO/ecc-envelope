@@ -98,7 +98,7 @@ class Envelope
 
   verify: ->
     @seal().then (e) =>
-      checksum = Buffer.from(e._checksum.toBuffer?() ? e._checksum)
+      checksum = new Buffer(e._checksum.toBuffer?() ? e._checksum)
       et.verify(checksum, e._from.public, e._signature) &&
       checksum.equals(et.checksum(e._cipher.encodeJSON()))
 
@@ -107,7 +107,7 @@ class Envelope
       @verify().then (valid) =>
         return false unless valid
         if @_algorithm == 'plaintext'
-          ciphertext = Buffer.from(e._cipher.ciphertext.toBuffer?() ? e._cipher.ciphertext)
+          ciphertext = new Buffer(e._cipher.ciphertext.toBuffer?() ? e._cipher.ciphertext)
           @_decryptor = promise.resolve(JSON.parse(ciphertext))
         else
           @_decryptor = et.decrypt(e._cipher, key, e._algorithm)
@@ -117,8 +117,8 @@ class Envelope
           to = e._to.public?.toBuffer?() ? e._to.public
           from = e._from.public?.toBuffer?() ? e._from.public
           result = { data: plaintext }
-          result.to = Buffer.from(to) if to?
-          result.from = Buffer.from(from) if from?
+          result.to = new Buffer(to) if to?
+          result.from = new Buffer(from) if from?
           result
 
   encode: (encoding) ->
@@ -129,7 +129,7 @@ class Envelope
         when 'base64' then e._buffer.encode64()
         else
           buffer = e._buffer.encode()
-          Buffer.from(buffer.toBuffer() ? buffer)
+          new Buffer(buffer.toBuffer() ? buffer)
 
 Envelope.et = et
 Envelope.Protocol = Protocol
