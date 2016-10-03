@@ -1,6 +1,6 @@
 {
   "name": "ecc-envelope",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "A protocol for encrypting and signing messages using Elliptical curve cryptography (ECC)",
   "main": "lib/index.js",
   "scripts": {
@@ -27,7 +27,7 @@
     "mocha": "^3.0.0"
   },
   "dependencies": {
-    "ecc-tools": "^1.0.2",
+    "ecc-tools": "^1.0.3",
     "protobufjs": "^5.0.1"
   }
 }
