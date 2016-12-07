@@ -55,7 +55,9 @@ class Envelope
     if @_decode = args.decode
       switch args.as
         when 'hex' then @_buffer = Protocol.Envelope.decodeHex(@_decode)
-        when 'json' then @_buffer = Protocol.Envelope.decodeJSON(@_decode)
+        when 'json'
+          @_decode = et.stringify(@_decode) if typeof @_decode isnt 'string'
+          @_buffer = Protocol.Envelope.decodeJSON(@_decode)
         else @_buffer = Protocol.Envelope.decode((@_decode.toBuffer?() ? @_decode))
       @_checksum = @_buffer.checksum
       @_signature = @_buffer.signature
