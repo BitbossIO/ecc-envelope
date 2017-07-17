@@ -63,8 +63,8 @@ class Envelope
       @_signature = @_buffer.signature
       @_cipher = @_buffer.cipher
 
-      @_to.public = @_cipher.to
-      @_from.public = @_cipher.from
+      @_to.public = @_cipher.to?.toBuffer?() ? @_cipher.to
+      @_from.public = @_cipher.from?.toBuffer?() ? @_cipher.from
       @_algorithm = Algorithms[@_cipher.algorithm]
       @_seal = promise.resolve(@)
     else
