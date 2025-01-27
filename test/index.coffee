@@ -121,21 +121,21 @@ describe 'Envelope', ->
       it 'should reject if signature is invalid', ->
         envelope = Envelope send: {hello: 'world'}, from: @alicePrivateKey
         result = envelope.seal().then (e) ->
-          e._signature = Buffer('fubar')
+          e._signature = Buffer.from('fubar')
           e.verify()
         expect(result).to.reject
 
       it 'should reject if checksum is invalid', ->
         envelope = Envelope send: {hello: 'world'}, from: @alicePrivateKey
         result = envelope.seal().then (e) ->
-          e._checksum = Buffer('fubar')
+          e._checksum = Buffer.from('fubar')
           e.verify()
         expect(result).to.reject
 
       it 'should reject if cipher is invalid', ->
         envelope = Envelope send: {hello: 'world'}, from: @alicePrivateKey
         result = envelope.seal().then (e) ->
-          e._cipher = Buffer('fubar')
+          e._cipher = Buffer.from('fubar')
           e.verify()
         expect(result).to.reject
 
